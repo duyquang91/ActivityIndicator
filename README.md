@@ -1,17 +1,21 @@
 # ActivityIndicator
-Combine version of [https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift](RxSwift/ActivityIndicator)
+![](https://img.shields.io/badge/iOS-13.0%2B-blue) ![](https://img.shields.io/badge/macOS-10.15%2B-blue) ![](https://img.shields.io/badge/watchOS-6.0%2B-blue) ![](https://img.shields.io/badge/tvOS-13.0%2B-blue) ![](https://img.shields.io/badge/Test%20coverage-93.2%25-brightgreen)
+
+Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift)
 
 ## Installation
-We only support for Swift Package Manager
+### Swift Package manager
 
 ```
 dependencies: [
     .package(url: "https://github.com/duyquang91/ActivityIndicator.git", from: "1.0")
 ]
 ```
+### How about Cocoapod or Carthage?
+The source code is very simple, feel free to copy into your project 🤗
 
 ## Distribution
-Issue reports & Pull requests are welcome 🤗
+Pull requests are welcome 🤗
 
 ## License
 Copyright by @duyquang91
