@@ -14,16 +14,17 @@ If there is at least one sequence computation in progress, `true` will be sent.
 When all activities complete `false` will be sent.
 */
 public final class ActivityIndicator {
-    private struct ActivityToken<Source: Publisher>: Cancellable {
+    private struct ActivityToken<Source: Publisher> {
         let source: Source
-        let cancelAction: () -> Void
+        let finishAction: () -> Void
         
-        func asPublisher() -> Source {
-            source
-        }
-        
-        func cancel() {
-            cancelAction()
+        func asPublisher() -> AnyPublisher<Source.Output, Source.Failure> {
+            source.handleEvents( receiveCompletion: { _ in
+                finishAction()
+            }, receiveCancel: {
+                finishAction()
+            }).eraseToAnyPublisher()
+
         }
     }
     
@@ -39,7 +40,7 @@ public final class ActivityIndicator {
     
     public init() {}
     
-    public func trackActivityOfPublisher<Source: Publisher>(source: Source) -> Source {
+    public func trackActivityOfPublisher<Source: Publisher>(source: Source) -> AnyPublisher<Source.Output, Source.Failure> {
         increment()
         return ActivityToken(source: source) {
             self.decrement()
@@ -60,7 +61,7 @@ public final class ActivityIndicator {
 }
 
 extension Publisher {
-    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Self {
+    public func trackActivity(_ activityIndicator: ActivityIndicator) -> AnyPublisher<Self.Output, Self.Failure> {
         activityIndicator.trackActivityOfPublisher(source: self)
     }
 }
