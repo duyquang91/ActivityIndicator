@@ -31,7 +31,7 @@ public final class ActivityIndicator {
     private var relay = 0
     private let lock = NSRecursiveLock()
     
-    var loading: AnyPublisher<Bool, Never> {
+    public var loading: AnyPublisher<Bool, Never> {
         $relay.map { $0 > 0 }
             .removeDuplicates()
             .eraseToAnyPublisher()
