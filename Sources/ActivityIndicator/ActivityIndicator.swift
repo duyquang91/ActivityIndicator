@@ -37,6 +37,8 @@ public final class ActivityIndicator {
             .eraseToAnyPublisher()
     }
     
+    public init() {}
+    
     public func trackActivityOfPublisher<Source: Publisher>(source: Source) -> Source {
         increment()
         return ActivityToken(source: source) {
