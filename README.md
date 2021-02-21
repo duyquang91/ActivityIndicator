@@ -36,6 +36,9 @@ dependencies: [
 ### How about Cocoapod or Carthage?
 The source code is very simple, feel free to copy into your project 🤗
 
+## Todo:
+- [ ] Add **ErrorIndicator** to handle all errors from request publishers
+
 ## Distribution
 Pull requests are welcome 🤗
 
