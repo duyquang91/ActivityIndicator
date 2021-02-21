@@ -1,7 +1,29 @@
 # ActivityIndicator
 ![](https://img.shields.io/badge/iOS-13.0%2B-blue) ![](https://img.shields.io/badge/macOS-10.15%2B-blue) ![](https://img.shields.io/badge/watchOS-6.0%2B-blue) ![](https://img.shields.io/badge/tvOS-13.0%2B-blue) ![](https://img.shields.io/badge/Test%20coverage-93.2%25-brightgreen)
 
-Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift)
+Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift) that help us to track the loading state of all publisher, particularly in network request publishers.
+## Usage
+Let's declare an instance of **ActivityIndicator** wherever you want to handle the requests (ex: ViewModel):
+```swift
+let activityIndicator = ActivityIndicator()
+
+/// Recommend to expose the loading state only
+var loadingPublisher: AnyPublisher<Bool, Never> {
+    activityIndicator.loading.eraseToAnyPublisher()
+}
+```
+Then use the `trackActivity` operator to track the state of request publishers:
+```swift
+refreshTokenPublisher.trackActivity(activityIndicator)
+getUserInfoPublisher.trackActivity(activityIndicator)
+```
+Now you can handle the loading state on the View component:
+```swift
+viewModel.loadingPublisher
+         .sink { isLoading in
+            self.showHUD(isLoading)
+         }
+```
 
 ## Installation
 ### Swift Package manager
