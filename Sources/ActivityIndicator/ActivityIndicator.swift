@@ -9,22 +9,25 @@ import Foundation
 import Combine
 
 /**
-Enables monitoring of sequence computation.
-If there is at least one sequence computation in progress, `true` will be sent.
-When all activities complete `false` will be sent.
-*/
+ Enables monitoring of sequence computation.
+ If there is at least one sequence computation in progress, `true` will be sent.
+ When all activities complete `false` will be sent.
+ */
 public final class ActivityIndicator {
     private struct ActivityToken<Source: Publisher> {
         let source: Source
+        let beginAction: () -> Void
         let finishAction: () -> Void
         
         func asPublisher() -> AnyPublisher<Source.Output, Source.Failure> {
-            source.handleEvents( receiveCompletion: { _ in
+            source.handleEvents(receiveCompletion: { _ in
                 finishAction()
             }, receiveCancel: {
                 finishAction()
+            }, receiveRequest: { _ in
+                beginAction()
             }).eraseToAnyPublisher()
-
+            
         }
     }
     
@@ -41,10 +44,12 @@ public final class ActivityIndicator {
     public init() {}
     
     public func trackActivityOfPublisher<Source: Publisher>(source: Source) -> AnyPublisher<Source.Output, Source.Failure> {
-        increment()
         return ActivityToken(source: source) {
+            self.increment()
+        } finishAction: {
             self.decrement()
         }.asPublisher()
+
     }
     
     private func increment() {
