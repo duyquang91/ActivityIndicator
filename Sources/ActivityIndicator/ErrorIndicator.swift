@@ -9,9 +9,7 @@ import Foundation
 import Combine
 
 /**
- Enables monitoring of sequence computation.
- If there is at least one sequence computation in progress, `true` will be sent.
- When all activities complete `false` will be sent.
+ Enables monitoring error of sequence computation.
  */
 public final class ErrorIndicator {
     private struct ActivityToken<Source: Publisher> {
