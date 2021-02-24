@@ -1,8 +1,9 @@
 # ActivityIndicator
-![](https://img.shields.io/badge/iOS-13.0%2B-blue) ![](https://img.shields.io/badge/macOS-10.15%2B-blue) ![](https://img.shields.io/badge/watchOS-6.0%2B-blue) ![](https://img.shields.io/badge/tvOS-13.0%2B-blue) ![](https://img.shields.io/badge/Test%20coverage-93.2%25-brightgreen)
+![](https://img.shields.io/badge/iOS-13.0%2B-blue) ![](https://img.shields.io/badge/macOS-10.15%2B-blue) ![](https://img.shields.io/badge/watchOS-6.0%2B-blue) ![](https://img.shields.io/badge/tvOS-13.0%2B-blue) ![](https://img.shields.io/badge/Test%20coverage-82.3%25-brightgreen)
 
 Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift) that help us to track the loading state of all publisher, particularly in network request publishers.
 ## Usage
+### Tracking loading states of publishers
 Let's declare an instance of **ActivityIndicator** wherever you want to handle the requests (ex: ViewModel):
 ```swift
 let activityIndicator = ActivityIndicator()
@@ -25,6 +26,31 @@ viewModel.loadingPublisher
          }
 ```
 
+### Collecting error of publishers in one place
+Let's declare an instance of **ErrorIndicator** wherever you want to handle the error of publisher requests (ex: ViewModel):
+```swift
+let errorIndicator = ErrorIndicator()
+
+/// Recommend to expose the loading state only
+var errorPublisher: AnyPublisher<Error, Never> {
+    errorIndicator.errors.eraseToAnyPublisher()
+}
+```
+Then use the `trackError` operator to track the state of request publishers:
+```swift
+refreshTokenPublisher.trackError(errorIndicator)
+// Can track loading together
+getUserInfoPublisher.trackActivity(activityIndicator)
+                    .trackError(errorIndicator)
+```
+Now you can handle the errors in one place such as in the View component:
+```swift
+viewModel.errorPublisher
+         .sink { error in
+            self.showErrorPopup(error)
+         }
+```
+
 ## Installation
 ### Swift Package manager
 
@@ -35,9 +61,6 @@ dependencies: [
 ```
 ### How about Cocoapod or Carthage?
 The source code is very simple, feel free to copy into your project 🤗
-
-## Todo:
-- [ ] Add **ErrorIndicator** to handle all errors from request publishers
 
 ## Distribution
 Pull requests are welcome 🤗

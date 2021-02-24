@@ -55,7 +55,52 @@ final class ActivityIndicatorTests: XCTestCase {
         wait(for: [expectation], timeout: 5000)
     }
     
+    func testErrorIndicator() {
+        enum TestError: Error {
+            case error
+        }
+        
+        var errors = [Error]()
+        let errorIndicator = ErrorIndicator()
+        
+        let relay1 = PassthroughSubject<Int, Error>()
+        let relay2 = PassthroughSubject<Int, Error>()
+        let relay3 = PassthroughSubject<Int, Error>()
+        
+        relay1.trackError(errorIndicator)
+            .sink { value in
+                print(value)
+            }
+        
+        relay2.trackError(errorIndicator)
+            .sink { value in
+                print(value)
+            }
+        
+        relay3.trackError(errorIndicator)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    XCTAssertEqual(errors.count, 3)
+                default:
+                    break
+                }
+            }, receiveValue: { value in
+                print(value)
+            })
+
+        errorIndicator.errors
+            .sink { error in
+                errors.append(error)
+            }
+        
+        relay1.send(completion: .failure(TestError.error))
+        relay2.send(completion: .failure(TestError.error))
+        relay3.send(completion: .failure(TestError.error))
+
+    }
+    
     static var allTests = [
-        ("testExample", testActivityIndicator),
+        ("testActivityIndicator", testActivityIndicator), ("testErrorIndicator", testErrorIndicator)
     ]
 }
