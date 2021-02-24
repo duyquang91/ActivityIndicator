@@ -1,7 +1,7 @@
 # ActivityIndicator
 ![](https://img.shields.io/badge/iOS-13.0%2B-blue) ![](https://img.shields.io/badge/macOS-10.15%2B-blue) ![](https://img.shields.io/badge/watchOS-6.0%2B-blue) ![](https://img.shields.io/badge/tvOS-13.0%2B-blue) ![](https://img.shields.io/badge/Test%20coverage-82.3%25-brightgreen)
 
-Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift) that help us to track the loading state of all publisher, particularly in network request publishers.
+Combine version of [RxSwift/ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/main/RxExample/RxExample/Services/ActivityIndicator.swift) & RxSwift/ErrorIndicator that help us to track the loading state & errors of all publisher, particularly in network request publishers.
 ## Usage
 ### Tracking loading states of publishers
 Let's declare an instance of **ActivityIndicator** wherever you want to handle the requests (ex: ViewModel):
