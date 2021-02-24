@@ -31,7 +31,7 @@ Let's declare an instance of **ErrorIndicator** wherever you want to handle the 
 ```swift
 let errorIndicator = ErrorIndicator()
 
-/// Recommend to expose the loading state only
+/// Recommend to expose the errors only
 var errorPublisher: AnyPublisher<Error, Never> {
     errorIndicator.errors.eraseToAnyPublisher()
 }
