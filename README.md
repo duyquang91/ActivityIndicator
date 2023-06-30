@@ -8,10 +8,8 @@ Let's declare an instance of **ActivityIndicator** wherever you want to handle t
 ```swift
 let activityIndicator = ActivityIndicator()
 
-/// Recommend to expose the loading state only
-var loadingPublisher: AnyPublisher<Bool, Never> {
-    activityIndicator.loading.eraseToAnyPublisher()
-}
+// Recommend to expose the loading state only
+lazy var loadingPublisher = activityIndicator.loading.eraseToAnyPublisher()
 ```
 Then use the `trackActivity` operator to track the state of request publishers:
 ```swift
@@ -31,10 +29,8 @@ Let's declare an instance of **ErrorIndicator** wherever you want to handle the 
 ```swift
 let errorIndicator = ErrorIndicator()
 
-/// Recommend to expose the errors only
-var errorPublisher: AnyPublisher<Error, Never> {
-    errorIndicator.errors.eraseToAnyPublisher()
-}
+// Recommend to expose the errors only
+lazy var errorPublisher = errorIndicator.errors.eraseToAnyPublisher()
 ```
 Then use the `trackError` operator to track the state of request publishers:
 ```swift
@@ -50,6 +46,9 @@ viewModel.errorPublisher
             self.showErrorPopup(error)
          }
 ```
+
+## Notes
+SwiftUI regularly re-render the `View`, do not expose your `loadingPublisher` & `errorPublisher` as computed variable, using lazy variable instead. Please follow this [issue](https://github.com/duyquang91/ActivityIndicator/issues/2) for more detail & best practices.
 
 ## Installation
 ### Swift Package manager
